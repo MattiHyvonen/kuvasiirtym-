@@ -1,21 +1,6 @@
 #include "context.h"
 #include <iostream>
-
-const char *vertexShaderSource = 
-    "#version 330 core\n"
-    "layout (location = 0) in vec2 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
-    "}\0";
-
-const char *fragmentShaderSource = 
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-    "}\n\0";
+#include "loadShaders.h"
 
 
 bool context::contextExists = false;
@@ -57,19 +42,10 @@ bool context::create(int width, int height) {
     glViewport(0, 0, width, height);
     
     //Load shaders
-    // TODO: error checking and logging
-    int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-    int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    int shaderProgram = loadShaders(
+                                    "data/default.vertexShader",
+                                    "data/default.fragmentShader"
+                                    );
     glUseProgram(shaderProgram);
     
     //define the vertex attribute for vertices and enable it
@@ -107,6 +83,8 @@ bool context::checkCloseEvent() {
 
 
 void context::close() {
+    
+    std::cout << "Closing context\n";
     //don't close if there's no context
     if(!contextExists) {
         return;

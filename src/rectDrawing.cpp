@@ -1,7 +1,7 @@
 #include "rectDrawing.h"
 #include <array>
 #include <iostream>
-/*
+
 const std::array<glm::vec2, 6> rectangleVertices = {
     glm::vec2(-1.0f, -1.0f),
     glm::vec2( 1.0f, -1.0f),
@@ -11,17 +11,7 @@ const std::array<glm::vec2, 6> rectangleVertices = {
     glm::vec2(-1.0f,  1.0f),
     glm::vec2( 1.0f,  1.0f)
 };
-*/
 
-const std::array<glm::vec2, 6> rectangleVertices = {
-    glm::vec2(-0.8f, -0.8f),
-    glm::vec2( 0.8f, -0.8f),
-    glm::vec2(-0.8f,  0.8f),
-    
-    glm::vec2( 0.8f, -0.8f),
-    glm::vec2(-0.8f,  0.8f),
-    glm::vec2( 0.8f,  0.8f)
-};
 
 bool rectDrawing::create(int width, int height) {
     std::cout << "Creating rectDrawing\n";
