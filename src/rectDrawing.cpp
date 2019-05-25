@@ -15,9 +15,10 @@ const std::array<glm::vec2, 6> rectangleVertices = {
 
 bool rectDrawing::create(int width, int height) {
     std::cout << "Creating rectDrawing\n";
-    //create the GL context and GLFW window
-    if(!context::create(width, height))
+    if(globalContext.isCreated() == false) {
+        std::cout << "Context not created!\n";
         return false;
+    }
     
     //Generate vertex array object
     // and a buffer for the vertices
@@ -47,10 +48,19 @@ bool rectDrawing::create(int width, int height) {
                                 (void*)0
                             );
     glEnableVertexAttribArray(0);
+    created = true;
     return true;
 }
 
 
+bool rectDrawing::isCreated(){
+    return created;
+}
+
+
 bool rectDrawing::drawRectangle() {
+    if(!isCreated())
+        return false;
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    return true;
 }

@@ -2,6 +2,7 @@
 #  -lX11 -lpthread -lXrandr -lXi -ldl
 
 SRC = src/context.cpp \
+src/textureLoader.cpp \
 src/rectDrawing.cpp \
 src/main.cpp
 

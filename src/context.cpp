@@ -2,21 +2,15 @@
 #include <iostream>
 #include "loadShaders.h"
 
-
-bool context::contextExists = false;
-
-
-//TODO: check if it's good
-bool context::isGood() {
-    return true;
-}
-
+context globalContext;
 
 bool context::create(int width, int height) {
     std::cout << "Creating context\n";
     
-    if(contextExists) {
+    //No need to create if it already exists.
+    if(isCreated() ) {
         //TODO: check if it's good and maybe destroy if not?
+        std::cout << "...already created!\n";
         return false;
     }
     
@@ -27,7 +21,7 @@ bool context::create(int width, int height) {
     
     window = glfwCreateWindow(  width, 
                                 height, 
-                                "kuvasiirtymä", 
+                                "kuvasiirtymä",
                                 NULL, NULL
     );
     
@@ -42,11 +36,11 @@ bool context::create(int width, int height) {
     glViewport(0, 0, width, height);
     
     //Load shaders
-    int shaderProgram = loadShaders(
+    shader = loadShaders(
                                     "data/default.vertexShader",
                                     "data/default.fragmentShader"
                                     );
-    glUseProgram(shaderProgram);
+    glUseProgram(shader);
     
     //define the vertex attribute for vertices and enable it
     // vertices are glm::vec2, ie. 2 floats
@@ -60,12 +54,24 @@ bool context::create(int width, int height) {
                             );
     glEnableVertexAttribArray(0);
     
+    //Set textures to their corresponding texture units:
+    for(int i = 0; i < 16; i++) {
+        std::string uniformName = "texture" + std::to_string(i);
+        std::cout << "set uniform " << uniformName << ": " << i << "\n";
+        glUniform1i(glGetUniformLocation(shader, uniformName.c_str()), i);
+    }    
+    
     //clear the screen and swap to try it
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    contextExists = true;
+    created = true;
     return true;
+}
+
+
+bool context::isCreated() {
+    return created;
 }
 
 
@@ -86,7 +92,7 @@ void context::close() {
     
     std::cout << "Closing context\n";
     //don't close if there's no context
-    if(!contextExists) {
+    if(!isCreated() ) {
         return;
     }
     
@@ -109,4 +115,9 @@ bool context::update() {
     glClear(GL_COLOR_BUFFER_BIT);
     
     return true;
+}
+
+
+bool createMainWindow(int w, int h) {
+    return globalContext.create(w, h);
 }
