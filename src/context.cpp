@@ -116,8 +116,3 @@ bool context::update() {
     
     return true;
 }
-
-
-bool createMainWindow(int w, int h) {
-    return globalContext.create(w, h);
-}

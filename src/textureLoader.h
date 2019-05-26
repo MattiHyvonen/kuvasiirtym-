@@ -30,4 +30,6 @@ public:
     // NOTE: memory allocation or data type is not checked in any way!
     bool load(int texture_i, int w, int h, GLenum type, char* data);
     
+    void setAsTestPattern(int texture_i, int w, int h);
+    
 };

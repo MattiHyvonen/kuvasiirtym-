@@ -6,6 +6,7 @@
 class rectDrawing : public context {
     unsigned int vao;
     unsigned int vertexBuffer;
+    unsigned int uvBuffer;
     bool created = false;
     
 public:

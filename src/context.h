@@ -42,5 +42,3 @@ public:
 };
 
 extern context globalContext;
-
-bool createMainWindow(int w = 640, int h = 512);
