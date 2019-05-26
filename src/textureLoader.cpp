@@ -3,8 +3,6 @@
 #include <iostream>
 
 bool textureLoader::create(int width, int height) {
-    std::cout << "creating textureLoader\n";
-    
     if(globalContext.isCreated() == false) {
         std::cout << "Context not created!\n";
         return false;

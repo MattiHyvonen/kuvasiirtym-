@@ -1,5 +1,6 @@
 #pragma once
 #include "GL.h"
+#include <string>
 
 class context{
 private:
@@ -34,3 +35,6 @@ public:
 };
 
 extern context globalContext;
+
+
+void setUniform(std::string name, float value);

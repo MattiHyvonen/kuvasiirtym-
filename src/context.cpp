@@ -5,12 +5,10 @@
 context globalContext;
 
 bool context::create(int width, int height) {
-    std::cout << "Creating context\n";
-    
     //No need to create if it already exists.
     if(isCreated() ) {
         //TODO: check if it's good and maybe destroy if not?
-        std::cout << "...already created!\n";
+        std::cout << "Context already created!\n";
         return false;
     }
     
@@ -58,7 +56,6 @@ bool context::create(int width, int height) {
     //Set textures to their corresponding texture units:
     for(int i = 0; i < 16; i++) {
         std::string uniformName = "texture" + std::to_string(i);
-        std::cout << "set uniform " << uniformName << ": " << i << "\n";
         glUniform1i(glGetUniformLocation(shader, uniformName.c_str()), i);
     }    
     
@@ -89,8 +86,6 @@ bool context::checkCloseEvent() {
 
 
 void context::close() {
-    
-    std::cout << "Closing context\n";
     //don't close if there's no context
     if(!isCreated() ) {
         return;
@@ -115,4 +110,15 @@ bool context::update() {
     glClear(GL_COLOR_BUFFER_BIT);
     
     return true;
+}
+
+
+//Set a float uniform in the current shader. 
+//TODO: template for any data type
+void setUniform(std::string name, float value) {
+    //get the shader
+    GLint shader;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &shader);
+    //set the value
+    glUniform1f(glGetUniformLocation(shader, name.c_str()), value);
 }

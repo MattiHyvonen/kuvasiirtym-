@@ -23,7 +23,6 @@ const std::array<glm::vec2, 6> rectangleUVs = {
 };
 
 bool rectDrawing::create(int width, int height) {
-    std::cout << "Creating rectDrawing\n";
     if(globalContext.isCreated() == false) {
         std::cout << "Context not created!\n";
         return false;

@@ -2,6 +2,7 @@
 #  -lX11 -lpthread -lXrandr -lXi -ldl
 
 SRC = src/stbImage.cpp \
+src/timing.cpp \
 src/context.cpp \
 src/textureLoader.cpp \
 src/rectDrawing.cpp \
