@@ -1,15 +1,6 @@
 #pragma once
 #include "GL.h"
 
-/* Problems:
- * If the context is destroyed, instances of its derived classes
- *   become invalid. Context validity is not checked in any way
- *   in the derived classes -- just that a context exists.
- *   If a context is created, destroyed and then another one is created,
- *   the derived class instances created while the first context existed
- *   will cause trouble!
- */
-
 class context{
 protected:
     //pointer to the GLFW window

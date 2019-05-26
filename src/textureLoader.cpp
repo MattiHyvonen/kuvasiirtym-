@@ -76,16 +76,29 @@ void textureLoader::setAsTestPattern(int texture_i, int w, int h) {
     int size = w * h * 4;
     unsigned char pixels[size];
     
-    for(int i=0; i<size; i+=4) {
-        float r,g,b,a;
-        float x = (float)(i%(4*w)) / (4*w);
-        float y = (float)(i/(h)) / (4*h);
-        r = x;
-        g = y;
-        pixels[i]  =  (unsigned char)(r*256);
-        pixels[i+1] = (unsigned char)(g*256);
-        pixels[i+2] = 0;
-        pixels[i+3] = 255;
+    for(int y=0; y<h; y++) {
+        for(int x=0; x<w; x++) {
+            float f_y = (float)y/h;
+            float f_x = (float)x/w;
+            float r,g,b,a;
+            int i = 4*(y*w + x);
+            
+            r = f_x;
+            g = f_y;
+            b = 0.5;
+            a = 1.0;
+            
+            unsigned char c_r = r * 256;
+            unsigned char c_g = g * 256;
+            unsigned char c_b = b * 256;
+            unsigned char c_a = a * 256;
+            
+            pixels[i] = c_r;
+            pixels[i+1] = c_g;
+            pixels[i+2] = c_b;
+            pixels[i+3] = c_a;
+        }
     }
+    
     load(0, w, h, GL_UNSIGNED_BYTE, (char*)pixels);
 }

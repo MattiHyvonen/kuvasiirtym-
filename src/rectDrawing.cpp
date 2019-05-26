@@ -3,13 +3,13 @@
 #include <iostream>
 
 const std::array<glm::vec2, 6> rectangleVertices = {
-    glm::vec2(-0.8f, -0.8f), //bottom left
-    glm::vec2( 0.8f, -0.8f), //bottom right
-    glm::vec2(-0.8f,  0.8f), //top left
+    glm::vec2(-1.0f, -1.0f), //bottom left
+    glm::vec2( 1.0f, -1.0f), //bottom right
+    glm::vec2(-1.0f,  1.0f), //top left
     
-    glm::vec2( 0.8f, -0.8f), //bottom right
-    glm::vec2(-0.8f,  0.8f), //top left
-    glm::vec2( 0.8f,  0.8f)  //top right
+    glm::vec2( 1.0f, -1.0f), //bottom right
+    glm::vec2(-1.0f,  1.0f), //top left
+    glm::vec2( 1.0f,  1.0f)  //top right
 };
 
 const std::array<glm::vec2, 6> rectangleUVs = {
