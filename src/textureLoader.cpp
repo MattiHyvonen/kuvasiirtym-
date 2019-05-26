@@ -1,4 +1,5 @@
 #include "textureLoader.h"
+#include "stb_image.h"
 #include <iostream>
 
 bool textureLoader::create(int width, int height) {
@@ -23,19 +24,44 @@ bool textureLoader::isCreated(){
 }
 
 
-bool textureLoader::load(int tx_i, int w, int h, GLenum type, char* data) {
-
+bool textureLoader::load(   int tx_i, 
+                            int w, 
+                            int h, 
+                            unsigned char* data, 
+                            int channels, 
+                            GLenum type
+                        ) 
+{
     if(!isCreated() ) {
         std::cout << "textureLoader not created!\n";
         return false;
     }
     
     std::cout   << "loading texture " << tx_i << ": " << w << "x" << h
-                << "\n";
+                << " with " << channels << " channels\n";
     
     if(tx_i < 0 || tx_i >= textures.size()) {
         std::cout << "bad texture index!\n";
         return false;
+    }
+    
+    GLenum format; //format of pixel data, defined by the number of channels
+    
+    switch(channels) {
+        case 4:
+            format = GL_RGBA;
+            break;
+        default:
+            std::cout   << "Bad number of channels: " << channels
+                        << "! 3 assumed\n";
+        case 3:
+            format = GL_RGB;
+            break;
+        case 2:
+            format = GL_RG;
+            break;
+        case 1:
+            format = GL_RED;
     }
     
     //Bind the texture in the corresponding texture unit
@@ -49,7 +75,7 @@ bool textureLoader::load(int tx_i, int w, int h, GLenum type, char* data) {
                     w,
                     h,
                     0,
-                    GL_RGBA,
+                    format,
                     type,
                     data
                 );
@@ -72,6 +98,28 @@ bool textureLoader::load(int tx_i, int w, int h, GLenum type, char* data) {
 }
 
 
+bool textureLoader::load(int tx_i, std::string filename) {
+    if(tx_i < 0 || tx_i >= textures.size()) {
+        std::cout << "bad texture index!\n";
+        return false;
+    }
+    
+    int width, height, channels;
+    unsigned char* data = stbi_load(    filename.c_str(), 
+                                        &width, 
+                                        &height, 
+                                        &channels, 
+                                        0
+                                   );
+    load(tx_i, width, height, data, channels, GL_UNSIGNED_BYTE);
+    
+    stbi_image_free(data);
+    
+    //TODO: return value
+    return true;
+}
+    
+    
 void textureLoader::setAsTestPattern(int texture_i, int w, int h) {
     int size = w * h * 4;
     unsigned char pixels[size];
@@ -100,5 +148,5 @@ void textureLoader::setAsTestPattern(int texture_i, int w, int h) {
         }
     }
     
-    load(0, w, h, GL_UNSIGNED_BYTE, (char*)pixels);
+    load(0, w, h, pixels, 4, GL_UNSIGNED_BYTE);
 }

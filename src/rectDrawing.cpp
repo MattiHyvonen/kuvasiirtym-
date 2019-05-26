@@ -13,13 +13,13 @@ const std::array<glm::vec2, 6> rectangleVertices = {
 };
 
 const std::array<glm::vec2, 6> rectangleUVs = {
-    glm::vec2(0.0f, 0.0f), //bottom left
-    glm::vec2(1.0f, 0.0f), //bottom right
-    glm::vec2(0.0f, 1.0f), //top left
+    glm::vec2(0.0f, 1.0f), //bottom left
+    glm::vec2(1.0f, 1.0f), //bottom right
+    glm::vec2(0.0f, 0.0f), //top left
     
-    glm::vec2(1.0f, 0.0f), //bottom right
-    glm::vec2(0.0f, 1.0f), //top left
-    glm::vec2(1.0f, 1.0f)  //top right
+    glm::vec2(1.0f, 1.0f), //bottom right
+    glm::vec2(0.0f, 0.0f), //top left
+    glm::vec2(1.0f, 0.0f)  //top right
 };
 
 bool rectDrawing::create(int width, int height) {

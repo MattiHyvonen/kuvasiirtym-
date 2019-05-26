@@ -14,8 +14,8 @@ int main() {
     R.create();
     T.create();
 
-    T.setAsTestPattern(0, 640, 512);
-        
+    T.load(0, "data/tux.jpg");  
+    
     while(globalContext.update() ) {
         R.drawRectangle();
     }
