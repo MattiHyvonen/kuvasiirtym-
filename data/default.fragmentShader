@@ -20,6 +20,11 @@ uniform sampler2D texture13;
 uniform sampler2D texture14;
 uniform sampler2D texture15;
 
+uniform float blend;
+
 void main() {
-    outColor = texture(texture0, tx_pos);
+    vec4 c0 = texture(texture0, tx_pos);
+    vec4 c1 = texture(texture1, tx_pos);
+    outColor = (c1 * blend + c0 * (1-blend));
+    
 }

@@ -14,6 +14,7 @@ bool context::create(int width, int height) {
         return false;
     }
     
+    //TODO: what if the required version is not supported?
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -61,7 +62,6 @@ bool context::create(int width, int height) {
         glUniform1i(glGetUniformLocation(shader, uniformName.c_str()), i);
     }    
     
-    //clear the screen and swap to try it
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 

@@ -97,7 +97,9 @@ bool textureLoader::load(   int tx_i,
     return true;
 }
 
-
+//TODO: some images don't work right
+//  maybe something with the type (GL_UNSIGNED_BYTE)
+//TODO: 16-bit tga?
 bool textureLoader::load(int tx_i, std::string filename) {
     if(tx_i < 0 || tx_i >= textures.size()) {
         std::cout << "bad texture index!\n";

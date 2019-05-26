@@ -2,14 +2,15 @@
 #include "GL.h"
 
 class context{
-protected:
+private:
     //pointer to the GLFW window
-    //TODO: should this be private? Access from derived classes?
     GLFWwindow* window;
+
+    bool created = false;
     
+protected:
     //GL index to shader
     int shader;
-    bool created = false;
     
 public:
     //Create GLFW window and a GL context in it,
