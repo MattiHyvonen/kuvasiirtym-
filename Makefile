@@ -3,6 +3,7 @@
 
 SRC = src/stbImage.cpp \
 src/timing.cpp \
+src/shaders.cpp \
 src/context.cpp \
 src/textureLoader.cpp \
 src/rectDrawing.cpp \

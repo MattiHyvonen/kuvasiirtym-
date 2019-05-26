@@ -29,12 +29,12 @@ public:
     // Resulting texture is always RGBA 32bit float,
     // with same size as the given data.
     // NOTE: memory allocation or data type is not checked in any way!
-    bool load(int texture_i, 
-              int w, 
-              int h, 
-              unsigned char* data = 0,
-              int channels = 3,
-              GLenum type = GL_UNSIGNED_BYTE
+    bool load(  int texture_i, 
+                int w, 
+                int h, 
+                unsigned char* data = 0,
+                int channels = 3,
+                GLenum type = GL_UNSIGNED_BYTE
              );
     
     //Load the texture from a file

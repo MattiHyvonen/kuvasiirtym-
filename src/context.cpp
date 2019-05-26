@@ -1,6 +1,5 @@
 #include "context.h"
 #include <iostream>
-#include "loadShaders.h"
 
 context globalContext;
 
@@ -34,13 +33,6 @@ bool context::create(int width, int height) {
     
     glViewport(0, 0, width, height);
     
-    //Load shaders
-    shader = loadShaders(
-                                    "data/default.vertexShader",
-                                    "data/default.fragmentShader"
-                                    );
-    glUseProgram(shader);
-    
     //define the vertex attribute for vertices and enable it
     // vertices are glm::vec2, ie. 2 floats
     glVertexAttribPointer(
@@ -52,13 +44,7 @@ bool context::create(int width, int height) {
                                 (void*)0
                             );
     glEnableVertexAttribArray(0);
-    
-    //Set textures to their corresponding texture units:
-    for(int i = 0; i < 16; i++) {
-        std::string uniformName = "texture" + std::to_string(i);
-        glUniform1i(glGetUniformLocation(shader, uniformName.c_str()), i);
-    }    
-    
+
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -110,15 +96,4 @@ bool context::update() {
     glClear(GL_COLOR_BUFFER_BIT);
     
     return true;
-}
-
-
-//Set a float uniform in the current shader. 
-//TODO: template for any data type
-void setUniform(std::string name, float value) {
-    //get the shader
-    GLint shader;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &shader);
-    //set the value
-    glUniform1f(glGetUniformLocation(shader, name.c_str()), value);
 }

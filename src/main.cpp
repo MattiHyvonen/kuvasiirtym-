@@ -1,6 +1,7 @@
 #include "rectDrawing.h"
 #include "textureLoader.h"
 #include "timing.h"
+#include "shaders.h"
 #include <stdlib.h>
 #include <iostream>
 
@@ -9,6 +10,13 @@ int main() {
     
     //Initialize GL context and create a window.
     globalContext.create(800, 600);
+    
+    //load and use shader
+    shader S;
+    S.load( "data/default.vertexShader",
+            "data/default.fragmentShader"
+          );
+    S.use();
     
     //Rectangle-drawing capabilities:
     rectDrawing R;
@@ -36,7 +44,7 @@ int main() {
 
         //Set blend factor, 0...1
         float blend = sin(t.getTime()*f);
-        setUniform("blend", blend);
+        S.setUniform("blend", blend);
         
         R.drawRectangle();
         

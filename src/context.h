@@ -9,10 +9,6 @@ private:
 
     bool created = false;
     
-protected:
-    //GL index to shader
-    int shader;
-    
 public:
     //Create GLFW window and a GL context in it,
     // if a context doesn't already exists.
@@ -35,6 +31,3 @@ public:
 };
 
 extern context globalContext;
-
-
-void setUniform(std::string name, float value);
