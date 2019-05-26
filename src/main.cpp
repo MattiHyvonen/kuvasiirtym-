@@ -1,5 +1,5 @@
 #include "rectDrawing.h"
-#include "textureLoader.h"
+#include "texture.h"
 #include "timing.h"
 #include "shaders.h"
 #include <stdlib.h>
@@ -10,7 +10,7 @@ int main() {
     
     //Initialize GL context and create a window.
     globalContext.create(800, 600);
-    
+
     //load and use shader
     shader S;
     S.load( "data/default.vertexShader",
@@ -22,13 +22,18 @@ int main() {
     rectDrawing R;
     R.create();
     
-    //Texture loading:
-    textureLoader T;    
-    T.create();    
+    //Textures:
+    texture pic1, pic2;
+    pic1.create();
+    pic2.create();
     
     //load 2 images, to texture units 0 and 1
-    T.load(0, "data/kuva1.jpg");
-    T.load(1, "data/tux.jpg");
+    pic1.loadFromFile(0, "data/kuva1.jpg");
+    pic2.loadFromFile(1, "data/tux.jpg");
+
+    //create fbo texture on texture unit 2
+    fboTexture fbo1;
+    fbo1.create(2, 800, 600);
 
     //Start the clock and set target FPS
     timer t;

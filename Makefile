@@ -5,7 +5,7 @@ SRC = src/stbImage.cpp \
 src/timing.cpp \
 src/shaders.cpp \
 src/context.cpp \
-src/textureLoader.cpp \
+src/texture.cpp \
 src/rectDrawing.cpp \
 src/main.cpp
 

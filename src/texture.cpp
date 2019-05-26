@@ -1,53 +1,38 @@
-/*
- * To be removed!
- */
-
-
-#include "textureLoader.h"
+#include "texture.h"
 #include "stb_image.h"
 #include <iostream>
 
-bool textureLoader::create(int width, int height) {
+bool texture::create() {
     if(globalContext.isCreated() == false) {
         std::cout << "Context not created!\n";
         return false;
     }
     
-    //Generate textures:
-    // textures.size(): the number of texture indices in array 'textures'
-    glGenTextures(textures.size(), &textures[0]);
-
+    glGenTextures(1, &id);
     created = true;
     return true;
 }
 
 
-bool textureLoader::isCreated(){
-    return created;
-}
-
-
-bool textureLoader::load(   int tx_i, 
-                            int w, 
-                            int h, 
-                            unsigned char* data, 
-                            int channels, 
-                            GLenum type
-                        ) 
+bool texture::setData(  int tx_i,
+                        int w, 
+                        int h, 
+                        unsigned char* data,
+                        int channels,
+                        GLenum type
+                     ) 
 {
-    if(!isCreated() ) {
-        std::cout << "textureLoader not created!\n";
+    if(created == false) {
+        std::cout << "Texture not created!\n";
         return false;
     }
     
-    std::cout   << "loading texture " << tx_i << ": " << w << "x" << h
-                << " with " << channels << " channels\n";
-    
-    if(tx_i < 0 || tx_i >= textures.size()) {
+    //there are 15 texture units
+    if(tx_i < 0 || tx_i > 15) {
         std::cout << "bad texture index!\n";
         return false;
-    }
-    
+    }    
+
     GLenum format; //format of pixel data, defined by the number of channels
     
     switch(channels) {
@@ -69,7 +54,7 @@ bool textureLoader::load(   int tx_i,
     
     //Bind the texture in the corresponding texture unit
     glActiveTexture(GL_TEXTURE0 + tx_i);
-    glBindTexture(GL_TEXTURE_2D, textures[tx_i]);
+    glBindTexture(GL_TEXTURE_2D, id);
        
     //Set the data
     glTexImage2D(   GL_TEXTURE_2D,
@@ -94,17 +79,14 @@ bool textureLoader::load(   int tx_i,
     //Set minify and magnify interpolation
     // Options: GL_LINEAR, GL_NEAREST
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);    
     
-    //NOTE: this leaves the texture unit active and the texture bound!
     return true;
 }
 
-//TODO: some images don't work right
-//  maybe something with the type (GL_UNSIGNED_BYTE)
-//TODO: 16-bit tga?
-bool textureLoader::load(int tx_i, std::string filename) {
-    if(tx_i < 0 || tx_i >= textures.size()) {
+
+bool texture::loadFromFile(int tx_i, std::string filename) {
+    if(tx_i < 0 || tx_i > 15) {
         std::cout << "bad texture index!\n";
         return false;
     }
@@ -116,16 +98,16 @@ bool textureLoader::load(int tx_i, std::string filename) {
                                         &channels, 
                                         0
                                    );
-    load(tx_i, width, height, data, channels, GL_UNSIGNED_BYTE);
+    setData(tx_i, width, height, data, channels, GL_UNSIGNED_BYTE);
     
     stbi_image_free(data);
     
     //TODO: return value
-    return true;
+    return true;    
 }
-    
-    
-void textureLoader::setAsTestPattern(int texture_i, int w, int h) {
+
+
+void texture::setAsTestPattern(int tx_i, int w, int h) {
     int size = w * h * 4;
     unsigned char pixels[size];
     
@@ -153,5 +135,35 @@ void textureLoader::setAsTestPattern(int texture_i, int w, int h) {
         }
     }
     
-    load(0, w, h, pixels, 4, GL_UNSIGNED_BYTE);
+    setData(tx_i, w, h, pixels, 4, GL_UNSIGNED_BYTE);
+}
+
+
+//TODO: return value?
+bool texture::useTexture(unsigned int tx_i) {
+    //Bind the texture in the corresponding texture unit
+    glActiveTexture(GL_TEXTURE0 + tx_i);
+    glBindTexture(GL_TEXTURE_2D, id);
+    return true;
+}
+
+
+bool fboTexture::create(int tx_i, int w, int h) {
+    glGenFramebuffers(1, &fbo_id);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+    
+    texture::create();
+    setData(tx_i, w, h, 0, 4, GL_FLOAT);
+    
+    //attach texture as color attachment 0
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0);
+    
+    //reset frame buffer binding
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    return true;
+}
+
+
+bool fboTexture::useFBO() {
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);    
 }
