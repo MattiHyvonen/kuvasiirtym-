@@ -32,6 +32,9 @@ bool texture::setData(  int tx_i,
         std::cout << "bad texture index!\n";
         return false;
     }    
+    
+    width = w;
+    height = h;
 
     GLenum format; //format of pixel data, defined by the number of channels
     
@@ -165,5 +168,6 @@ bool fboTexture::create(int tx_i, int w, int h) {
 
 
 bool fboTexture::useFBO() {
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);    
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+    glViewport(0, 0, width, height);
 }

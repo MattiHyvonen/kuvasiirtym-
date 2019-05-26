@@ -93,7 +93,7 @@ bool context::update() {
     }
     
     //clear
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
     
     return true;
 }

@@ -7,6 +7,8 @@ class texture{
 protected:
     unsigned int id;
     bool created = false;
+    int width;
+    int height;
 public:    
     bool create();
     

@@ -23,36 +23,38 @@ int main() {
     R.create();
     
     //Textures:
-    texture pic1, pic2;
-    pic1.create();
-    pic2.create();
+    texture pic;
+    pic.create();
     
-    //load 2 images, to texture units 0 and 1
-    pic1.loadFromFile(0, "data/kuva1.jpg");
-    pic2.loadFromFile(1, "data/tux.jpg");
+    //load picture, use texture unit 0
+    pic.loadFromFile(0, "data/tux.jpg");
 
-    //create fbo texture on texture unit 2
+    //create fbo texture, use texture unit 0
     fboTexture fbo1;
-    fbo1.create(2, 800, 600);
+    fbo1.create(0, 800, 600);
+    fbo1.loadFromFile(0, "data/kuva1.jpg");
 
+    //use the texture on texture unit 0
+    pic.useTexture(0);
+    
+    //render the picture on fbo1
+    fbo1.useFBO();
+    R.drawRectangle();
+    
+    //render fbo1 on screen
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, 800, 600);
+    fbo1.useTexture(0);
+    R.drawRectangle();
+    
     //Start the clock and set target FPS
     timer t;
     t.reset();
     t.setPeriod_fps(60);
     
-    //frequency of blending
-    float f = 3;
-
     //Flip buffers and check events first.
     //  Returns false when the context is closed.
     while(globalContext.update() ) {
-
-        //Set blend factor, 0...1
-        float blend = sin(t.getTime()*f);
-        S.setUniform("blend", blend);
-        
-        R.drawRectangle();
-        
         //sleep to match the target FPS
         t.sleep();
     }
