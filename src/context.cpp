@@ -1,10 +1,12 @@
 #include "context.h"
+#include "shaders.h"
 #include <iostream>
 
 context globalContext;
 
 //Create a GLFW window and a GL context, make it current and clear.
-bool context::create(int width, int height) {
+//  Set viewport and view transformation
+bool context::create(int w, int h) {
 
     //No need to create if it already exists.
     if(isCreated() ) {
@@ -12,6 +14,9 @@ bool context::create(int width, int height) {
         std::cout << "Context already created!\n";
         return false;
     }
+    
+    width = w;
+    height = h;
     
     //TODO: what if the required version is not supported?
     glfwInit();
@@ -33,8 +38,6 @@ bool context::create(int width, int height) {
     //NOTE: this needs to be after glfwMakeContextCurrent, why?
     glewInit();
     
-    glViewport(0, 0, width, height);
-    
     //define the vertex attribute for vertices and enable it
     // vertices are glm::vec2, ie. 2 floats
     glVertexAttribPointer(
@@ -47,11 +50,24 @@ bool context::create(int width, int height) {
                             );
     glEnableVertexAttribArray(0);
 
+    //bind framebuffer, set viewport and view transformation
+    setAsRenderTarget();
+    
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     created = true;
     return true;
+}
+
+
+int context::getWidth() {
+    return width;
+}
+
+
+int context::getHeight() {
+    return height;
 }
 
 
@@ -94,8 +110,18 @@ bool context::update() {
         return false;
     }
     
+    //always clear on update?
     //clear
     //glClear(GL_COLOR_BUFFER_BIT);
     
+    return true;
+}
+
+
+//TODO: errors and return value
+bool context::setAsRenderTarget() {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, width, height );
+    setViewTransformation(width, height);
     return true;
 }

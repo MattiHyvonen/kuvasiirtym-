@@ -8,6 +8,8 @@ private:
     GLFWwindow* window;
 
     bool created = false;
+    int width = 0;
+    int height = 0;
     
 public:
     //Create GLFW window and a GL context in it,
@@ -16,6 +18,9 @@ public:
     // Return false if couldn't create, 
     // or if existing context was not good.
     bool create(int width = 640, int height = 512);
+    
+    int getWidth();
+    int getHeight();
     
     bool isCreated();
     
@@ -28,6 +33,10 @@ public:
     //Flip the buffers, clear and check events.
     // Return false if context was closed.
     bool update();
+    
+    //Bind frame buffer to the context
+    //  Set viewport and view transformation
+    bool setAsRenderTarget();
 };
 
 extern context globalContext;

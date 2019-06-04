@@ -1,6 +1,7 @@
 #include "texture.h"
 #include "stb_image.h"
 #include <iostream>
+#include <vector>
 
 bool texture::create() {
     if(globalContext.isCreated() == false) {
@@ -24,6 +25,7 @@ int texture::getHeight() {
 }
 
 
+//TODO: safer container version
 bool texture::setData(  int tx_i,
                         int w, 
                         int h, 
@@ -120,16 +122,18 @@ bool texture::loadFromFile(int tx_i, std::string filename) {
 }
 
 
-void texture::setAsTestPattern(int tx_i, int w, int h) {
-    int size = w * h * 4;
-    unsigned char pixels[size];
-    
-    for(int y=0; y<h; y++) {
-        for(int x=0; x<w; x++) {
+void texture::setAsTestPattern(int tx_i, long long int w, long long int h) {
+    long long int size = w * h * 4;
+    std::vector<unsigned char> pixels(size);
+    long long int max_i = 0;
+    for(long long int y=0; y<h; y++) {
+        for(long long int x=0; x<w; x++) {
             float f_y = (float)y/h;
             float f_x = (float)x/w;
             float r,g,b,a;
-            int i = 4*(y*w + x);
+            long long int i = 4*(y*w + x);
+            
+            max_i = i;
             
             r = f_x;
             g = f_y;
@@ -145,10 +149,13 @@ void texture::setAsTestPattern(int tx_i, int w, int h) {
             pixels[i+1] = c_g;
             pixels[i+2] = c_b;
             pixels[i+3] = c_a;
+            
         }
     }
     
-    setData(tx_i, w, h, pixels, 4, GL_UNSIGNED_BYTE);
+    std::cout << "max_i=" << max_i << "\n";
+    
+    setData(tx_i, w, h, &pixels[0], 4, GL_UNSIGNED_BYTE);
 }
 
 

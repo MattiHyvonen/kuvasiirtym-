@@ -4,6 +4,11 @@
 #include "shaders.h"
 #include <stdlib.h>
 #include <iostream>
+#include <limits>
+
+void printMaxInt() {
+    std::cout << "maximum int value is " << std::numeric_limits<int>::max();
+}
 
 
 int main() {
@@ -17,7 +22,11 @@ int main() {
             "data/default.fragmentShader"
           );
     S.use();
-        
+
+    //this needs to be called after a new shader is loaded to set the transform matrices.
+    //TODO: make this happen automatically!
+    globalContext.setAsRenderTarget();
+    
     //Rectangle-drawing capabilities:
     rectDrawing R;
     R.create();
@@ -27,15 +36,13 @@ int main() {
     pic.create();
     
     //load picture, use texture unit 0
-    pic.loadFromFile(0, "data/tux.jpg");
+    //pic.loadFromFile(0, "data/large.jpg");
+    pic.setAsTestPattern(0, 4096, 4096);
 
     //use the texture on texture unit 0
     pic.useTexture(0);
     
     //render the picture on screen
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, 800, 600);
-    setViewTransformation(800, 600);
     setModelTransformation(100, 100, 400, 400);
     R.drawRectangle();
     
