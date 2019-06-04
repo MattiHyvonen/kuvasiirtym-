@@ -36,7 +36,7 @@ int main() {
     pic.create();
     
     //load picture, use texture unit 0
-    //pic.loadFromFile(0, "data/large.jpg");
+    //pic.loadFromFile(0, "data/tux.jpg");
     pic.setAsTestPattern(0, 4096, 4096);
 
     //use the texture on texture unit 0
