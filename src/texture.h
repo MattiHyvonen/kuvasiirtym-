@@ -24,7 +24,7 @@ public:
     
     bool loadFromFile(int texture_i, std::string filename);
     
-    void setAsTestPattern(int texture_i, long long int w, long long int h);
+    void setAsTestPattern(int texture_i, int w, int h);
     
     //use the texture on given texture unit
     bool useTexture(unsigned int textureUnit);

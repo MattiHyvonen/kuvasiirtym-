@@ -4,6 +4,10 @@
 #include <sstream>
 #include <thread>
 
+
+timer globalClock;
+
+
 void timer::setPeriod_ms(int period_ms) {
     typedef std::chrono::system_clock::duration sysduration;
     typedef std::chrono::milliseconds milliseconds;

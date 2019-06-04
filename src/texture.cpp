@@ -1,5 +1,6 @@
 #include "texture.h"
 #include "stb_image.h"
+#include "waveField.h"
 #include <iostream>
 #include <vector>
 
@@ -122,37 +123,27 @@ bool texture::loadFromFile(int tx_i, std::string filename) {
 }
 
 
-void texture::setAsTestPattern(int tx_i, long long int w, long long int h) {
-    long long int size = w * h * 4;
-    std::vector<unsigned char> pixels(size);
-    long long int max_i = 0;
-    for(long long int y=0; y<h; y++) {
-        for(long long int x=0; x<w; x++) {
+void texture::setAsTestPattern(int tx_i, int w, int h) {
+    int channels = 1;
+    long long int size = w * h * channels;
+    std::vector<float> pixels(size);
+
+    waveSeries S;
+    S.randomize();
+    S.normalize();
+    
+    for(int y=0; y<h; y++) {
+        for(int x=0; x<w; x++) {
             float f_y = (float)y/h;
             float f_x = (float)x/w;
             float r,g,b,a;
-            long long int i = 4*(y*w + x);
+            long long int i = (long long int)y * w * channels + (long long int)x * channels;
             
-            max_i = i;
-            
-            r = f_x;
-            g = f_y;
-            b = 0.5;
-            a = 1.0;
-            
-            unsigned char c_r = r * 256;
-            unsigned char c_g = g * 256;
-            unsigned char c_b = b * 256;
-            unsigned char c_a = a * 256;
-            
-            pixels[i] = c_r;
-            pixels[i+1] = c_g;
-            pixels[i+2] = c_b;
-            pixels[i+3] = c_a;
-            
+            r = S.getAt(glm::vec2(f_x, f_y));
+            pixels[i] = (r+1)/2;
         }
     }
-    setData(tx_i, w, h, &pixels[0], 4, GL_UNSIGNED_BYTE);
+    setData(tx_i, w, h, (unsigned char*)&pixels[0], channels, GL_FLOAT);
 }
 
 

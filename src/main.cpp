@@ -2,12 +2,15 @@
 #include "texture.h"
 #include "timing.h"
 #include "shaders.h"
+#include <time.h>
 #include <stdlib.h>
 #include <iostream>
 #include <limits>
 
 
 int main() {
+    
+    srand(time(NULL));
     
     //Initialize GL context and create a window.
     globalContext.create(800, 600);
@@ -33,7 +36,7 @@ int main() {
     
     //load picture, use texture unit 0
     //pic.loadFromFile(0, "data/tux.jpg");
-    pic.setAsTestPattern(0, 4096, 4096);
+    pic.setAsTestPattern(0, 2048, 2048);
 
     //use the texture on texture unit 0
     pic.useTexture(0);
@@ -43,15 +46,14 @@ int main() {
     R.drawRectangle();
     
     //Start the clock and set target FPS
-    timer t;
-    t.reset();
-    t.setPeriod_fps(60);
+    globalClock.reset();
+    globalClock.setPeriod_fps(60);
     
     //Flip buffers and check events first.
     //  Returns false when the context is closed.
     while(globalContext.update() ) {
         //sleep to match the target FPS
-        t.sleep();
+        globalClock.sleep();
     }
 
     return 0;

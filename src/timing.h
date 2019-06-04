@@ -25,3 +25,5 @@ public:
     //set start time to current time
     void reset();
 };
+
+extern timer globalClock;
