@@ -88,14 +88,14 @@ bool texture::setData(  int tx_i,
                 
     //Set horizontal wrapping 
     // Options: GL_CLAMP_TO_EDGE, GL_MIRRORED_REPEAT, GL_REPEAT
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     //Set vertical wrapping
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     
     //Set minify and magnify interpolation
     // Options: GL_LINEAR, GL_NEAREST
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);    
     
     return true;
 }
@@ -123,14 +123,20 @@ bool texture::loadFromFile(int tx_i, std::string filename) {
 }
 
 
-void texture::setAsTestPattern(int tx_i, int w, int h) {
-    int channels = 1;
+void texture::setAsTestPattern(int tx_i, int w, int h, int channels) {
+    if(channels < 1)
+        return;
+    if(channels > 4)
+        channels = 4;
+    
     long long int size = w * h * channels;
     std::vector<float> pixels(size);
 
-    waveSeries S;
-    S.randomize();
-    S.normalize();
+    waveSeries S[channels];
+    for(int i=0; i<channels; i++) {
+        S[i].randomize();
+        S[i].normalize();
+    }
     
     for(int y=0; y<h; y++) {
         for(int x=0; x<w; x++) {
@@ -138,9 +144,30 @@ void texture::setAsTestPattern(int tx_i, int w, int h) {
             float f_x = (float)x/w;
             float r,g,b,a;
             long long int i = (long long int)y * w * channels + (long long int)x * channels;
+
+            for(int c=0; c<channels; c++) {
+                pixels[i+c] = S[c].getAt(glm::vec2(f_x, f_y) );
+            }
             
-            r = S.getAt(glm::vec2(f_x, f_y));
-            pixels[i] = (r+1)/2;
+            
+/*            
+            r = S[0].getAt(glm::vec2(f_x, f_y));
+            g = r * (-1);
+            b = r*r;
+            a = 1;
+            
+            if(channels == 1) {
+                pixels[i] = (r+1)/2;
+            }
+            else{
+                pixels[i] = r;
+                pixels[i+1] = g;
+                if(channels > 2)
+                    pixels[i+2] = b;
+                if(channels > 3)
+                    pixels[i+3] = a;
+            }
+*/            
         }
     }
     setData(tx_i, w, h, (unsigned char*)&pixels[0], channels, GL_FLOAT);

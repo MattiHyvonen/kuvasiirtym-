@@ -33,6 +33,10 @@ void printDuration(std::chrono::system_clock::duration d) {
 }
 
 
+//Sleep until the end of period is reached
+//  Return false if period's end passed already and there was lag,
+//  true otherwise.
+//  The thread that calls this function sleeps.
 bool timer::sleep() {
     typedef std::chrono::system_clock::time_point timePoint;
     typedef std::chrono::system_clock::duration duration;
@@ -41,6 +45,7 @@ bool timer::sleep() {
     timePoint now = std::chrono::system_clock::now();
     timePoint periodEnd = lastCall + period;
     
+    //it's already past period's end! Don't wait
     if(periodEnd < now) {
         lastCall = now;
         return false;
