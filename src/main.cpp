@@ -6,10 +6,6 @@
 #include <iostream>
 #include <limits>
 
-void printMaxInt() {
-    std::cout << "maximum int value is " << std::numeric_limits<int>::max();
-}
-
 
 int main() {
     

@@ -2,6 +2,8 @@
 #  -lX11 -lpthread -lXrandr -lXi -ldl
 
 SRC = src/stbImage.cpp \
+src/utility.cpp \
+src/waveField.cpp \
 src/timing.cpp \
 src/shaders.cpp \
 src/context.cpp \

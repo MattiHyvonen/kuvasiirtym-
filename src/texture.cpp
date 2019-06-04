@@ -152,9 +152,6 @@ void texture::setAsTestPattern(int tx_i, long long int w, long long int h) {
             
         }
     }
-    
-    std::cout << "max_i=" << max_i << "\n";
-    
     setData(tx_i, w, h, &pixels[0], 4, GL_UNSIGNED_BYTE);
 }
 
