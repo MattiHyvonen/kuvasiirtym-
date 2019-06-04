@@ -14,6 +14,16 @@ bool texture::create() {
 }
 
 
+int texture::getWidth() {
+    return width;
+}
+
+
+int texture::getHeight() {
+    return height;
+}
+
+
 bool texture::setData(  int tx_i,
                         int w, 
                         int h, 
@@ -167,6 +177,8 @@ bool fboTexture::create(int tx_i, int w, int h) {
 }
 
 
+//Start using the texture as the rendering target.
+//  Set viewport to the texture's size.
 bool fboTexture::useFBO() {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
     glViewport(0, 0, width, height);

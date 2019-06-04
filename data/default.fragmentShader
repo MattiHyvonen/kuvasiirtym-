@@ -25,6 +25,6 @@ uniform float blend;
 void main() {
     vec4 c0 = texture(texture0, tx_pos);
     vec4 c1 = texture(texture1, tx_pos);
-    outColor = c0;
+    outColor = mix(c0, c1, blend);
     
 }

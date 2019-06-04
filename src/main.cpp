@@ -17,7 +17,7 @@ int main() {
             "data/default.fragmentShader"
           );
     S.use();
-    
+        
     //Rectangle-drawing capabilities:
     rectDrawing R;
     R.create();
@@ -29,22 +29,14 @@ int main() {
     //load picture, use texture unit 0
     pic.loadFromFile(0, "data/tux.jpg");
 
-    //create fbo texture, use texture unit 0
-    fboTexture fbo1;
-    fbo1.create(0, 800, 600);
-    fbo1.loadFromFile(0, "data/kuva1.jpg");
-
     //use the texture on texture unit 0
     pic.useTexture(0);
     
-    //render the picture on fbo1
-    fbo1.useFBO();
-    R.drawRectangle();
-    
-    //render fbo1 on screen
+    //render the picture on screen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, 800, 600);
-    fbo1.useTexture(0);
+    setViewTransformation(800, 600);
+    setModelTransformation(100, 100, 400, 400);
     R.drawRectangle();
     
     //Start the clock and set target FPS

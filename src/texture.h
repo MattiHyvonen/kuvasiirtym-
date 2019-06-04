@@ -11,6 +11,8 @@ protected:
     int height;
 public:    
     bool create();
+    int getWidth();
+    int getHeight();
     
     bool setData(   int tx_i,
                     int w, 

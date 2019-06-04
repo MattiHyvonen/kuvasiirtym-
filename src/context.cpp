@@ -3,7 +3,9 @@
 
 context globalContext;
 
+//Create a GLFW window and a GL context, make it current and clear.
 bool context::create(int width, int height) {
+
     //No need to create if it already exists.
     if(isCreated() ) {
         //TODO: check if it's good and maybe destroy if not?
