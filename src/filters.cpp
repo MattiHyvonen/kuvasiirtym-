@@ -83,12 +83,23 @@ void displaceFilter::updateDisplacement() {
     const float speedLevel_x = 1;
     const float speedLevel_y = 0.123454321;
     
+    float tTime = getTime() - waitTime_start;
+    float tLevel;
+    
+    if(tTime < 0)
+        tLevel = 0;
+    else if(tTime < transitionTime)
+        tLevel = (tTime / transitionTime) * PI;
+    else {
+        tLevel = PI;
+    }
+    
     float m = mLevel * magnitude;
     glm::vec2 dt(speed * speedLevel_x, speed * speedLevel_y);
     
     t += dt;
     displaceAmount += m * W.getAt(t);
-    S.setUniform("displacement", displaceAmount);
+    S.setUniform("displacement", sin(tLevel) * displaceAmount);
 }
 
 
@@ -122,12 +133,19 @@ bool displaceFilter::loadSettings(std::string filename) {
     if(exists("displaceWavenumber") )
         waveNumber = get_i("displaceWavenumber");
     
+    if(exists("transitionTime"))
+        transitionTime = get_f("transitionTime");
+    if(exists("waitTime_start"))
+        waitTime_start = get_f("waitTime_start");
+    if(exists("waitTime_end"))
+        waitTime_end = get_f("waitTime_end");    
+    
+    //start the clock
+    reset();
+    
     W.randomize(harmonics, waveNumber);
     W.normalize();
     
-    std::cout << "Loaded settings:\n" 
-                << displaceAmount << "\n" << speed << "\n" << magnitude << "\n"
-                << harmonics << "\n" << waveNumber << "\n";
     return true;
 }    
     
@@ -138,4 +156,58 @@ bool displaceFilter::setMap(texture src) {
 }
 
 
+bool mixFilter::prepare(texture src) {
+    if(finished) {
+        S.setUniform("blend", 1);
+        src.useTexture(0);
+        image.useTexture(1);        
+        return true;
+    }
+    
+    float mixTime = getTime() - waitTime_start;
+    float mix;
+    
+    if(mixTime < 0)
+        mix = 0;
+    else if(mixTime < transitionTime)
+        mix = mixTime / transitionTime;
+    else {
+        mix = 1;
+        finished = true;
+    }
+    
+    std::cout << "blend: " << mix << "\n";
+    
+    S.setUniform("blend", mix);
+    src.useTexture(0);
+    image.useTexture(1);
+    return true;
+}
+
+
+void mixFilter::loadSettings(std::string file) {
+    //load settings from file to settings object
+    load(file);
+    
+    //get parameters from the settings object
+    if(exists("transitionTime"))
+        transitionTime = get_f("transitionTime");
+    if(exists("waitTime_start"))
+        waitTime_start = get_f("waitTime_start");
+    if(exists("waitTime_end"))
+        waitTime_end = get_f("waitTime_end");
+    
+    //start the clock
+    reset();
+}
+
+
+void mixFilter::setImage(texture src) {
+    image = src;
+}
+
+
+bool mixFilter::isFinished() {
+    return finished;
+}
 
