@@ -9,6 +9,7 @@ src/shaders.cpp \
 src/context.cpp \
 src/texture.cpp \
 src/rectDrawing.cpp \
+src/filters.cpp \
 src/main.cpp
 
 CFLAGS = -std=c++17

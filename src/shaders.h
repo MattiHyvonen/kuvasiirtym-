@@ -8,6 +8,9 @@ class shader{
     int id;
 
 public:
+    shader();
+    shader(std::string vfile, std::string ffile);
+    
     bool load(std::string vfile, std::string ffile);
     bool use();
     

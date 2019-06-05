@@ -101,6 +101,15 @@ std::string settings::get(std::string parameterName) {
 }
 
 
+bool settings::exists(std::string parameterName) {
+    std::string s = get(parameterName);
+    if(s == "")
+        return false;
+    else
+        return true;
+}
+
+
 int settings::get_i(std::string parameterName) {
     std::string s = this->get(parameterName);
     if(!s.empty())

@@ -10,10 +10,7 @@ class rectDrawing : public context {
     bool created = false;
     
 public:
-    //Create the window, context and vertex buffers.
-    // (see: context::create() )
-    // Return false if couldn't create.
-    bool create(int width = 640, int height = 512);
+    bool create();
     bool isCreated();
     
     bool drawRectangle();

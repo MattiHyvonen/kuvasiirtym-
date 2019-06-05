@@ -32,6 +32,7 @@ public:
 
 
 class fboTexture : public texture{
+protected:
     unsigned int fbo_id;
 public:
     bool create(int tx_i, int w, int h);

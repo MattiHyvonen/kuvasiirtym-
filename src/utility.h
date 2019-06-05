@@ -45,6 +45,9 @@ public:
     //get parameter value as string
     std::string get(std::string parameterName);
     
+    //check if parameter exists
+    bool exists(std::string parameterName);
+    
     //get parameter value as int. Return 0 if not found
     int get_i(std::string parameterName);
     

@@ -31,6 +31,7 @@ void main() {
     vec2 uv = tx_pos + displacement * texture(texture1, tx_pos).rg;
 
     vec4 c0 = texture(texture0, uv);
+    //vec4 c1 = texture(texture1, tx_pos);
     
     outColor = c0;
     

@@ -36,7 +36,7 @@ glm::mat4 getViewMatrix(float width, float height) {
     else xscale = 2 / width;
     
     if(height == 0) yscale = 0;
-    else yscale = -2 / height;
+    else yscale = 2 / height;
     
     glm::vec3 loc(-width/2, -height/2, 0);
     glm::vec3 rot(0, 0, 0);
@@ -46,6 +46,14 @@ glm::mat4 getViewMatrix(float width, float height) {
 }
 
 
+shader::shader() {}
+
+
+shader::shader(std::string vfile, std::string ffile) {
+    load(vfile, ffile);
+}
+    
+    
 //Read and compile the source files. Run use() to use the shader
 //TODO: errors and return value
 bool shader::load(std::string vfile, std::string ffile) {
@@ -54,7 +62,8 @@ bool shader::load(std::string vfile, std::string ffile) {
 }
 
 
-//Use the shader and set texture uniforms
+//Use the shader and set texture uniforms.
+//TODO: errors and return value
 bool shader::use() {
     glUseProgram(id);    
 
@@ -63,6 +72,7 @@ bool shader::use() {
         std::string uniformName = "texture" + std::to_string(i);
         glUniform1i(glGetUniformLocation(id, uniformName.c_str()), i);
     }
+    return true;
 }
 
 
