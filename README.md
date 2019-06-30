@@ -1,4 +1,4 @@
-# kuvasiirtym-
+# kuvasiirtymä
 Siirtymäefektejä kahden kuvan välillä
 
 Riippuvuudet:
