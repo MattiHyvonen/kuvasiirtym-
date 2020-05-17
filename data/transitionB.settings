@@ -1,8 +1,0 @@
-kuva1 data/kuva2.jpg
-kuva2 data/kuva3.jpg
-
-randomSeed none
-
-transitionTime 20
-waitTime_start 0
-waitTime_end 5

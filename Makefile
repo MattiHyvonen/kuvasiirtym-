@@ -1,25 +1,20 @@
-# links suggested in gl tutorial:
-#  -lX11 -lpthread -lXrandr -lXi -ldl
-
-SRC = src/stbImage.cpp \
-src/utility.cpp \
-src/waveField.cpp \
-src/timing.cpp \
-src/shaders.cpp \
-src/context.cpp \
-src/texture.cpp \
-src/rectDrawing.cpp \
-src/filters.cpp \
+src =  \
+src/kello.cpp \
+src/ikkuna.cpp \
+src/shader.cpp \
+src/kuva.cpp \
+src/kuvanPiirtaja.cpp \
+src/asetukset.cpp \
+src/siirtyma.cpp \
 src/main.cpp
 
-CFLAGS = -std=c++17
+cflags = \
+`pkg-config glfw3 glew opencv --cflags` -std=c++17 
 
-LFLAGS = -lGLEW -lGL -lglfw
+lflags = `pkg-config glfw3 glew opencv --libs`
 
-EXECUTABLE = kuvasiirtyma
+executable = piirto
 
 all:
-	g++ $(SRC) $(CFLAGS) $(LFLAGS) -o $(EXECUTABLE)
+	g++ $(src) $(cflags) $(lflags) -o $(executable)
 
-clean:
-	rm $(EXECUTABLE)

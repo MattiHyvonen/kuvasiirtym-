@@ -1,8 +1,0 @@
-displaceSpeed 0.001
-displaceMagnitude 0.001
-displaceHarmonics 10
-displaceWavenumber 12
-
-transitionTime 30
-waitTime_start 0
-waitTime_end 0
